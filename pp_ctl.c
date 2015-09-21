@@ -3686,12 +3686,12 @@ PP(pp_require)
 	RETPUSHYES;
     }
     if (!SvOK(sv))
-        DIE(aTHX_ "Missing or undefined argument to require");
+        DIE(aTHX_ "Missing or undefined argument to %s", OP_DESC(PL_op));
     name = SvPV_nomg_const(sv, len);
     if (!(name && len > 0 && *name))
-        DIE(aTHX_ "Missing or undefined argument to require");
+        DIE(aTHX_ "Missing or undefined argument to %s", OP_DESC(PL_op));
 
-    if (!IS_SAFE_PATHNAME(name, len, "require")) {
+    if (!IS_SAFE_PATHNAME(name, len, OP_DESC(PL_op))) {
         DIE(aTHX_ "Can't locate %s:   %s",
             pv_escape(newSVpvs_flags("",SVs_TEMP),SvPVX(sv),SvCUR(sv),
                       SvCUR(sv)*2,NULL, SvUTF8(sv)?PERL_PV_ESCAPE_UNI:0),
@@ -3899,7 +3899,7 @@ PP(pp_require)
 			dirlen = 0;
 		    }
 
-		    if (!IS_SAFE_SYSCALL(dir, dirlen, "@INC entry", "require"))
+		    if (!IS_SAFE_SYSCALL(dir, dirlen, "@INC entry", OP_DESC(PL_op)))
 			continue;
 #ifdef VMS
 		    if ((unixdir =

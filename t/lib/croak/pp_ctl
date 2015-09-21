@@ -16,3 +16,23 @@ use 5.01;
 default{}
 EXPECT
 Can't "default" outside a topicalizer at - line 2.
+########
+# NAME error on require undef
+require undef
+EXPECT
+Missing or undefined argument to require at - line 1.
+########
+# NAME error on require ""
+require ""
+EXPECT
+Missing or undefined argument to require at - line 1.
+########
+# NAME error on do undef
+do undef
+EXPECT
+Missing or undefined argument to do "file" at - line 1.
+########
+# NAME error on do ""
+do ""
+EXPECT
+Missing or undefined argument to do "file" at - line 1.

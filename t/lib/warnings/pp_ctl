@@ -251,3 +251,16 @@ EXPECT
 use warnings;
 eval 'use 5.006; use 5.10.0';
 EXPECT
+########
+# NAME \0 in require/do arguments and @INC
+use warnings;
+eval 'require "a\0b";';
+eval 'do "a\0b"';
+push @INC, "a\0b";
+eval 'require "some-unknown-filename"';
+eval 'do "some-unknown-filename"';
+EXPECT
+Invalid \0 character in pathname for require: a\0b at (eval 1) line 1.
+Invalid \0 character in pathname for do "file": a\0b at (eval 2) line 1.
+Invalid \0 character in @INC entry for require: a\0b at (eval 3) line 1.
+Invalid \0 character in @INC entry for do "file": a\0b at (eval 4) line 1.
