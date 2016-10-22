@@ -1676,7 +1676,7 @@ EOP
             # NOTE - Do not put quotes in the code!
             # NOTE - We have to triple escape the backref in the pattern below.
             my $code='
-                BEGIN{require q(test.pl);}
+                BEGIN{require q(./test.pl);}
                 watchdog(3);
                 for my $len (1 .. 20) {
                     my $eights= q(8) x $len;
@@ -1692,7 +1692,7 @@ EOP
             # #123562]
 
             my $code='
-                BEGIN{require q(test.pl);}
+                BEGIN{require q(./test.pl);}
                 use Encode qw(_utf8_on);
                 # \x80 and \x41 are continuation bytes in their respective
                 # character sets
@@ -1760,7 +1760,7 @@ EOP
                 my ($expr, $expect, $test_name, $cap1)= @$tuple;
                 # avoid quotes in this code!
                 my $code='
-                    BEGIN{require q(test.pl);}
+                    BEGIN{require q(./test.pl);}
                     watchdog(3);
                     my $status= eval(q{ !(' . $expr . ') ? q(failed) : ' .
                         ($cap1 ? '($1 ne q['.$cap1.']) ? qq(badmatch:$1) : ' : '') .
