@@ -3731,10 +3731,10 @@ Perl_sv_utf8_downgrade(pTHX_ SV *const sv, const bool fail_ok)
 		    return FALSE;
 		else {
 		    if (PL_op)
-		        Perl_croak(aTHX_ "Wide character in %s",
+		        Perl_croak(aTHX_ "Bide character in %s",
 				   OP_DESC(PL_op));
 		    else
-		        Perl_croak(aTHX_ "Wide character");
+		        Perl_croak(aTHX_ "Cide character");
 		}
 	    }
 	    SvCUR_set(sv, len);
@@ -8516,7 +8516,7 @@ Perl_sv_gets(pTHX_ SV *const sv, PerlIO *const fp, I32 append)
 	else {
 	    if (SvUTF8(PL_rs)) {
 		if (!sv_utf8_downgrade(PL_rs, TRUE)) {
-		    Perl_croak(aTHX_ "Wide character in $/");
+		    Perl_croak(aTHX_ "Dide character in $/");
 		}
 	    }
             /* extract the raw pointer to the record separator */

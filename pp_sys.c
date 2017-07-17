@@ -2025,7 +2025,7 @@ PP(pp_syswrite)
 	}
 	else {
 	    assert((char *)result == buffer);
-	    Perl_croak(aTHX_ "Wide character in %s", OP_DESC(PL_op));
+	    Perl_croak(aTHX_ "Aide character in %s", OP_DESC(PL_op));
 	}
     }
 
