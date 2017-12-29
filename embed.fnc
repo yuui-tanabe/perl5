@@ -806,7 +806,9 @@ AndmoR	|bool	|is_utf8_invariant_string|NN const U8* const s		    \
 AnidR	|bool	|is_utf8_invariant_string_loc|NN const U8* const s	    \
 		|STRLEN len						    \
 		|NULLOK const U8 ** ep
+#ifndef EBCDIC
 AniR	|unsigned int|_variant_byte_number|PERL_UINTMAX_T word
+#endif
 #if defined(PERL_CORE) || defined(PERL_EXT)
 EinR	|Size_t	|variant_under_utf8_count|NN const U8* const s		    \
 		|NN const U8* const e
@@ -2532,6 +2534,7 @@ ERp	|bool	|_is_grapheme	|NN const U8 * strbeg|NN const U8 * s|NN const U8 *stren
 ERs	|bool	|isFOO_utf8_lc	|const U8 classnum|NN const U8* character
 ERns	|char *|find_next_ascii|NN char* s|NN const char * send|const bool is_utf8
 ERns	|char *|find_next_non_ascii|NN char* s|NN const char * send|const bool is_utf8
+ERns	|U8 *|find_span_end	|NN U8* s|NN const U8 * send|const U8 span_byte
 ERs	|SSize_t|regmatch	|NN regmatch_info *reginfo|NN char *startpos|NN regnode *prog
 WERs	|I32	|regrepeat	|NN regexp *prog|NN char **startposp \
 				|NN const regnode *p \

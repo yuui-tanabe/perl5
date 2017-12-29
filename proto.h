@@ -137,11 +137,6 @@ PERL_CALLCONV UV	Perl__to_utf8_title_flags(pTHX_ const U8 *p, const U8* e, U8* u
 PERL_CALLCONV UV	Perl__to_utf8_upper_flags(pTHX_ const U8 *p, const U8 *e, U8* ustrp, STRLEN *lenp, bool flags, const char * const file, const int line);
 #define PERL_ARGS_ASSERT__TO_UTF8_UPPER_FLAGS	\
 	assert(p); assert(ustrp); assert(file)
-#ifndef PERL_NO_INLINE_FUNCTIONS
-PERL_STATIC_INLINE unsigned int	S__variant_byte_number(PERL_UINTMAX_T word)
-			__attribute__warn_unused_result__;
-#endif
-
 PERL_CALLCONV void	Perl__warn_problematic_locale(void);
 PERL_CALLCONV_NO_RET void	Perl_abort_execution(pTHX_ const char * const msg, const char * const name)
 			__attribute__noreturn__;
@@ -3866,6 +3861,13 @@ PERL_CALLCONV_NO_RET int	Perl_magic_regdatum_set(pTHX_ SV* sv, MAGIC* mg)
 	assert(sv); assert(mg)
 
 #endif
+#if !defined(EBCDIC)
+#ifndef PERL_NO_INLINE_FUNCTIONS
+PERL_STATIC_INLINE unsigned int	S__variant_byte_number(PERL_UINTMAX_T word)
+			__attribute__warn_unused_result__;
+#endif
+
+#endif
 #if !defined(HAS_GETENV_LEN)
 PERL_CALLCONV char*	Perl_getenv_len(pTHX_ const char *env_elem, unsigned long *len);
 #define PERL_ARGS_ASSERT_GETENV_LEN	\
@@ -5575,6 +5577,11 @@ STATIC char *	S_find_next_ascii(char* s, const char * send, const bool is_utf8)
 STATIC char *	S_find_next_non_ascii(char* s, const char * send, const bool is_utf8)
 			__attribute__warn_unused_result__;
 #define PERL_ARGS_ASSERT_FIND_NEXT_NON_ASCII	\
+	assert(s); assert(send)
+
+STATIC U8 *	S_find_span_end(U8* s, const U8 * send, const U8 span_byte)
+			__attribute__warn_unused_result__;
+#define PERL_ARGS_ASSERT_FIND_SPAN_END	\
 	assert(s); assert(send)
 
 STATIC bool	S_isFOO_utf8_lc(pTHX_ const U8 classnum, const U8* character)
