@@ -736,7 +736,6 @@
 #define utf8_to_uvchr(a,b)	Perl_utf8_to_uvchr(aTHX_ a,b)
 #define utf8_to_uvuni(a,b)	Perl_utf8_to_uvuni(aTHX_ a,b)
 #define utf8_to_uvuni_buf(a,b,c)	Perl_utf8_to_uvuni_buf(aTHX_ a,b,c)
-#define utf8n_to_uvchr_error(a,b,c,d,e)	Perl_utf8n_to_uvchr_error(aTHX_ a,b,c,d,e)
 #define utf8n_to_uvuni(a,b,c,d)	Perl_utf8n_to_uvuni(aTHX_ a,b,c,d)
 #define uvoffuni_to_utf8_flags(a,b,c)	Perl_uvoffuni_to_utf8_flags(aTHX_ a,b,c)
 #define uvuni_to_utf8(a,b)	Perl_uvuni_to_utf8(aTHX_ a,b)
@@ -768,6 +767,10 @@
 #define whichsig_sv(a)		Perl_whichsig_sv(aTHX_ a)
 #define wrap_keyword_plugin(a,b)	Perl_wrap_keyword_plugin(aTHX_ a,b)
 #define wrap_op_checker(a,b,c)	Perl_wrap_op_checker(aTHX_ a,b,c)
+#if !(defined(EBCDIC))
+#define _full_utf8n_to_uvchr_error	Perl__full_utf8n_to_uvchr_error
+#define utf8n_to_uvchr_error	Perl_utf8n_to_uvchr_error
+#endif
 #if !(defined(HAS_MEMMEM))
 #define ninstr			Perl_ninstr
 #endif
@@ -807,6 +810,9 @@
 #if defined(DEBUGGING)
 #define pad_setsv(a,b)		Perl_pad_setsv(aTHX_ a,b)
 #define pad_sv(a)		Perl_pad_sv(aTHX_ a)
+#endif
+#if defined(EBCDIC)
+#define utf8n_to_uvchr_error(a,b,c,d,e)	Perl_utf8n_to_uvchr_error(aTHX_ a,b,c,d,e)
 #endif
 #if defined(HAS_SIGACTION) && defined(SA_SIGINFO)
 #define csighandler		Perl_csighandler

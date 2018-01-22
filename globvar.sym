@@ -65,6 +65,7 @@ PL_sig_num
 PL_simple
 PL_simple_bitmask
 PL_subversion
+PL_utf8_to_uvchr_dfa_tab_with_surrogates
 PL_utf8skip
 PL_uuemap
 PL_valid_types_IVX

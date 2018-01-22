@@ -1446,6 +1446,34 @@ test_valid_utf8_to_uvchr(s)
     OUTPUT:
         RETVAL
 
+AV *
+test_utf8_to_uvchr_buf(s)
+
+        SV *s
+    PREINIT:
+        STRLEN retlen;
+        UV ret;
+        STRLEN slen;
+        char * pv;
+
+    CODE:
+        /* Call utf8n_to_uvchr_buf() with the inputs.  It always asks for the
+         * actual length to be returned
+         *
+         */
+        RETVAL = newAV();
+        sv_2mortal((SV*)RETVAL);
+        pv = SvPV(s, slen);
+
+        ret = utf8_to_uvchr_buf((U8*) pv, slen, &retlen);
+
+        /* Returns the return value in [0]; <retlen> in [1] */
+        av_push(RETVAL, newSVuv(ret));
+        av_push(RETVAL, newSVuv(retlen));
+
+    OUTPUT:
+        RETVAL
+
 SV *
 test_uvchr_to_utf8_flags(uv, flags)
 

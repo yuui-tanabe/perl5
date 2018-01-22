@@ -1275,11 +1275,20 @@ flag to suppress any warnings, and then examine the C<*errors> return.
 */
 
 UV
-Perl_utf8n_to_uvchr_error(pTHX_ const U8 *s,
-                                STRLEN curlen,
-                                STRLEN *retlen,
-                                const U32 flags,
-                                U32 * errors)
+#ifdef EBCDIC
+  Perl_utf8n_to_uvchr_error(pTHX_
+#else
+  Perl__full_utf8n_to_uvchr_error(
+                                  const UV precalc_uv,
+#endif
+                                  const U8 *s,
+                                  STRLEN curlen,
+                                  STRLEN *retlen,
+                                  const U32 flags,
+                                  U32 * errors
+#ifndef EBCDIC
+#endif
+                            )
 {
     const U8 * const s0 = s;
     U8 * send = NULL;           /* (initialized to silence compilers' wrong
@@ -1302,7 +1311,11 @@ Perl_utf8n_to_uvchr_error(pTHX_ const U8 *s,
                                             routine; see [perl #130921] */
     UV uv_so_far = 0;   /* (Initialized to silence compilers' wrong warning) */
 
+#ifdef EBCDIC
     PERL_ARGS_ASSERT_UTF8N_TO_UVCHR_ERROR;
+#else
+    PERL_ARGS_ASSERT__FULL_UTF8N_TO_UVCHR_ERROR;
+#endif
 
     if (errors) {
         *errors = 0;
@@ -1310,6 +1323,19 @@ Perl_utf8n_to_uvchr_error(pTHX_ const U8 *s,
     else {
         errors = &discard_errors;
     }
+
+#ifndef EBCDIC
+
+    if (precalc_uv) {
+        uv = precalc_uv;
+        curlen = UVCHR_SKIP(uv);
+        if (retlen) {
+            *retlen = curlen;
+        }
+        goto got_codepoint;
+    }
+
+#endif
 
     /* The order of malformation tests here is important.  We should consume as
      * few bytes as possible in order to not skip any valid character.  This is
@@ -1459,6 +1485,7 @@ Perl_utf8n_to_uvchr_error(pTHX_ const U8 *s,
         {
             UV min_uv = uv_so_far;
             STRLEN i;
+            dTHX;
 
             /* Here, the input is both overlong and is missing some trailing
              * bytes.  There is no single code point it could be for, but there
@@ -1480,6 +1507,8 @@ Perl_utf8n_to_uvchr_error(pTHX_ const U8 *s,
             (void) uvoffuni_to_utf8_flags(adjusted_s0, min_uv, 0);
         }
     }
+
+  got_codepoint:
 
     /* Here, we have found all the possible problems, except for when the input
      * is for a problematic code point not allowed by the input parameters. */
@@ -1575,6 +1604,7 @@ Perl_utf8n_to_uvchr_error(pTHX_ const U8 *s,
     if (UNLIKELY(possible_problems)) {
         bool disallowed = FALSE;
         const U32 orig_problems = possible_problems;
+        dTHX;
 
         while (possible_problems) { /* Handle each possible problem */
             UV pack_warn = 0;
@@ -1954,7 +1984,6 @@ returned.
 Also implemented as a macro in utf8.h
 
 */
-
 
 UV
 Perl_utf8_to_uvchr_buf(pTHX_ const U8 *s, const U8 *send, STRLEN *retlen)
