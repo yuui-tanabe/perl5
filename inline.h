@@ -458,7 +458,8 @@ S_is_utf8_invariant_string_loc(const U8* const s, STRLEN len, const U8 ** ep)
         } while (x + PERL_WORDSIZE <= send);
     }
 
-#endif
+#  endif    /* End of ! MSVC6 */
+#endif      /* End of ! EBCDIC */
 
     /* Process per-byte */
     while (x < send) {
@@ -476,7 +477,10 @@ S_is_utf8_invariant_string_loc(const U8* const s, STRLEN len, const U8 ** ep)
     return TRUE;
 }
 
-#ifndef EBCDIC
+#if ! defined(EBCDIC) && ! defined(USING_MSVC6)
+
+/* Apparent compiler error with MSVC6, so can't use this function.  All callers
+ * to it must be compiled to use the EBCDIC fallback on MSVC6 */
 
 PERL_STATIC_INLINE unsigned int
 S__variant_byte_number(PERL_UINTMAX_T word)
