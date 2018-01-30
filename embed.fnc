@@ -2459,6 +2459,7 @@ Es	|SSize_t|study_chunk	|NN RExC_state_t *pRExC_state \
                                 |I32 stopparen|U32 recursed_depth \
 				|NULLOK regnode_ssc *and_withp \
 				|U32 flags|U32 depth
+EsR	|SV *	|get_ANYOFM_contents|NN const regnode * n
 EsRn	|U32	|add_data	|NN RExC_state_t* const pRExC_state \
 				|NN const char* const s|const U32 n
 rs	|void	|re_croak2	|bool utf8|NN const char* pat1|NN const char* pat2|...
@@ -2535,6 +2536,9 @@ ERs	|bool	|isFOO_utf8_lc	|const U8 classnum|NN const U8* character
 ERns	|char *|find_next_ascii|NN char* s|NN const char * send|const bool is_utf8
 ERns	|char *|find_next_non_ascii|NN char* s|NN const char * send|const bool is_utf8
 ERns	|U8 *|find_span_end	|NN U8* s|NN const U8 * send|const U8 span_byte
+ERns	|U8 *	|find_next_masked|NN U8 * s				\
+				 |NN const U8 * send			\
+				 |const U8 byte|const U8 mask
 ERns	|U8 *|find_span_end_mask|NN U8 * s|NN const U8 * send	\
 				|const U8 span_byte|const U8 mask
 ERs	|SSize_t|regmatch	|NN regmatch_info *reginfo|NN char *startpos|NN regnode *prog
