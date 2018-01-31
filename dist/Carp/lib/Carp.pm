@@ -116,7 +116,7 @@ BEGIN {
 	;
 }
 
-our $VERSION = '1.45';
+our $VERSION = '1.46';
 $VERSION =~ tr/_//d;
 
 our $MaxEvalLen = 0;
@@ -286,7 +286,9 @@ sub format_arg {
 
         # lazy check if the CPAN module UNIVERSAL::isa is used or not
         #   if we use a rogue version of UNIVERSAL this would lead to infinite loop
-        my $isa = $UNIVERSAL::isa::VERSION ? sub { 1 } : \&UNIVERSAL::isa;
+        my $isa = (exists $UNIVERSAL::{"isa::"} and $UNIVERSAL::isa::VERSION)
+            ? sub { 1 }
+            : \&UNIVERSAL::isa;
 
          # legitimate, let's not leak it.
         if (!$in_recurse && $isa->( $arg, 'UNIVERSAL' ) &&
