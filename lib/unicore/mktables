@@ -15377,6 +15377,7 @@ END
         # the new 2nd earliest with the 3rd earliest to get all those existing
         # in the 3rd earliest, and so on.
         foreach my $current_age (@rest_ages) {
+print STDERR "XXX: ", ref($current_age), '|', $current_age->name, "\n";
             next if $current_age->name !~ /^[\d.]*$/;   # Skip the non-numeric
 
             my $current_in = $in->add_match_table(
@@ -15394,6 +15395,7 @@ END
             $current_age->add_description(
                             "Code point's usage was introduced in version "
                             . $current_age->name);
+print STDERR "YYY: $in", '|', $current_age->name, "\n";
             $current_age->add_note("See also $in");
 
         }
